@@ -1,0 +1,124 @@
+<div class="container">
+  <div class="row mb-3 justify-content-between">
+    <div class="col-md-5" *ngIf="dataSeasons.length > 0">
+      <ngx-select-dropdown
+        [config]="{
+          displayKey: 'seasonText',
+          search: true,
+          placeholder: 'Search Season',
+          searchOnKey: 'seasonText',
+          searchPlaceholder: 'Search'
+        }"
+        [options]="dataSeasons"
+        [(ngModel)]="searchedSeasonDD"
+        (change)="seasonChange($event)"
+      ></ngx-select-dropdown>
+    </div>
+    <div class="col-md-2">
+      <input
+        type="button"
+        value="Add Season"
+        class="btn btn-primary w-100"
+        (click)="onAddSeason()"
+      />
+    </div>
+  </div>
+  <div class="row d-flex">
+    <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+      <table class="table">
+        <thead class="thead-dark">
+        <tr>
+          <th>Season ID</th>
+          <th>Season Name</th>
+          <th style="width: 100px;"> Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let row of seasons
+              | paginate
+                : {
+                    itemsPerPage: tableSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+            let i = index
+          "
+          [class.active]="i == currentIndex"
+        >
+          <td scope="row">
+            <ng-container>
+              <span>{{ row.seasonId }}</span>
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.seasonText }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.seasonText"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onEditSeason(row)"
+              value="Edit"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onUpdateSeason(row)"
+              value="Update"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onResetSeason(row)"
+              value="Cancel"
+            />
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link del-btn m-1"
+              (click)="onDeleteSeason(row)"
+              value="Delete"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <pagination-controls
+        responsive="true"
+        previousLabel="Prev"
+        nextLabel="Next"
+        (pageChange)="onTableDataChange($event)"
+      >
+      </pagination-controls>
+    </div>
+    <div class="col-md-4">
+      <div class="p-2 bd-highlight">
+        <select (change)="onTableSizeChange($event)" class="custom-select">
+          <option *ngFor="let size of tableSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,226 @@
+<div class="container">
+  <div class="row d-flex">
+    <div class="col-md-12">
+    <div class="card">
+      <div class="card-body overflowCard">
+      <table class="table">
+        <thead class="thead-dark">
+        <tr>
+          <th>Id</th>
+          <th>Date</th>
+          <th>Time (24hrs)</th>
+          <th>Status</th>
+          <th>Home Team</th>
+          <th>Score(H)</th>
+          <th>Away Team</th>
+          <th>Score(A)</th>
+          <th>Referee</th>
+          <th>Asst. Ref</th>
+          <th>Stadium</th>
+          <th>Attendance</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let row of matches
+              | paginate
+                : {
+                    itemsPerPage: tableSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+            let i = index
+          "
+          [class.active]="i == currentIndex"
+          style="align-items: center"
+        >
+          <td scope="row">
+            <ng-container>
+              <span>{{ row.matchId }}</span>
+            </ng-container>
+          </td>
+          <td scope="row" style="min-width: 90px">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.matchDate }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="date"
+                [(ngModel)]="row.matchDate"
+              />
+            </ng-container>
+          </td>
+          <td scope="row">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.matchTime }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.matchTime"
+              />
+            </ng-container>
+          </td>
+          <td scope="row">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.status }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.status"
+              />
+            </ng-container>
+          </td>
+          <td style="min-width: 170px">
+            <ngx-select-dropdown
+              [config]="{
+                displayKey: 'text',
+                search: true,
+                placeholder: 'Search Team',
+                searchOnKey: 'text',
+                searchPlaceholder: 'Search'
+              }"
+              [disabled]="!row.isEdited"
+              [options]="teams"
+              [(ngModel)]="row.homeTeamName"
+              (change)="homeTeamChange(row, $event)"
+            ></ngx-select-dropdown>
+          </td>
+          <td scope="row">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.homeTeamScore }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="number"
+                [(ngModel)]="row.homeTeamScore"
+              />
+            </ng-container>
+          </td>
+          <td style="min-width: 170px">
+            <ngx-select-dropdown
+              [config]="{
+                displayKey: 'text',
+                search: true,
+                placeholder: 'Search Team',
+                searchOnKey: 'text',
+                searchPlaceholder: 'Search'
+              }"
+              [disabled]="!row.isEdited"
+              [options]="teams"
+              [(ngModel)]="row.awayTeamName"
+              (change)="awayTeamChange(row, $event)"
+            ></ngx-select-dropdown>
+          </td>
+          <td scope="row">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.awayTeamScore }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="number"
+                [(ngModel)]="row.awayTeamScore"
+              />
+            </ng-container>
+          </td>
+          <td scope="row">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.referee }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.referee"
+              />
+            </ng-container>
+          </td>
+          <td scope="row">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.asst_Referee_1 }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.asst_Referee_1"
+              />
+            </ng-container>
+          </td>
+          <td style="min-width: 170px">
+            <ngx-select-dropdown
+              [config]="{
+                displayKey: 'text',
+                search: true,
+                placeholder: 'Search Stadium',
+                searchOnKey: 'text',
+                searchPlaceholder: 'Search'
+              }"
+              [disabled]="!row.isEdited"
+              [options]="stadiums"
+              [(ngModel)]="row.stadiumName"
+              (change)="stadiumChange(row, $event)"
+            ></ngx-select-dropdown>
+          </td>
+          <td scope="row">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.attendance }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.attendance"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onEditMatchDetails(row)"
+              value="Edit"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onUpdateMatchDetails(row)"
+              value="Update"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onResetMatchDetails(row)"
+              value="Cancel"
+            />
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link m-1 del-btn"
+              (click)="onDeleteMatchDetails(row)"
+              value="Delete"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <pagination-controls
+        responsive="true"
+        previousLabel="Prev"
+        nextLabel="Next"
+        (pageChange)="onTableDataChange($event)"
+      >
+      </pagination-controls>
+    </div>
+    <div class="col-md-4">
+      <div class="p-2 bd-highlight">
+        <select (change)="onTableSizeChange($event)" class="custom-select">
+          <option *ngFor="let size of tableSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

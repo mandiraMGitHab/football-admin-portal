@@ -1,0 +1,38 @@
+.siteLogo img{
+  object-fit: contain;
+  margin-bottom: 20px;
+}
+.sideBar .mat-expansion-panel {
+  background-color: transparent;
+  box-shadow: none;
+  padding: 8px 15px;
+}
+.sideBar .mat-expansion-panel-header {
+  background-color: transparent;
+  padding: 0;
+  color: #fff;
+}
+.mat-expansion-panel-header-title{
+  color: #fff;
+}
+
+.mat-list-item{
+  color: #fff;
+  margin: 15px 0;
+}
+.mr-2{
+  margin-right: 15px;
+}
+
+::ng-deep mat-expansion-panel-header mat-panel-description,
+::ng-deep mat-expansion-panel-header .mat-expansion-indicator::after {
+  color: white !important;
+  fill: white !important;
+}
+.active-link > .mat-list-item{
+  background: #fff;
+  color: #854df8;
+  border-radius: 5px;
+}
+
+

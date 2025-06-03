@@ -1,0 +1,16 @@
+.form-title{
+  font-size: 35px;
+  font-weight: 500;
+  padding-bottom: 15px;
+  color: #361f64;
+}
+.btn.btn-submit{
+  padding: 5px 50px;
+  border-radius: 30px;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+::ng-deep .mat-form-field {
+  display: block !important;
+}

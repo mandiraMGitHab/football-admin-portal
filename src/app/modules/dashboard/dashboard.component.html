@@ -1,0 +1,59 @@
+<div class="home-container justify-content-center">
+  <div class="container">
+    <div class="row">
+      <h1 class="align-items-center mb-4 pb-4" style="text-align: center;">Welcome to Football Technica!!</h1>
+
+      <div class="col-md-12">
+      <div class="align-items-center">
+        <div class="card">
+        <div class="card-body">
+        <div class="admin-panel">
+          <h2>Admin Panel List</h2>
+          <table class="table">
+            <thead class="thead-dark">
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Email</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of jsonData">
+                <td>{{ item.id }}</td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.role }}</td>
+                <td>{{ item.email }}</td>
+                <td>{{ item.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      </div>
+      </div>
+
+    </div>
+
+    </div>
+  </div>
+
+  <!-- <div *ngIf="!isAuthenticated" class="login-container"> -->
+  <!-- <div *ngIf="!isAuthenticated" class="login-container">
+    <h2>Login</h2>
+    <form (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input type="text" id="username" [(ngModel)]="username" name="username" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" [(ngModel)]="password" name="password" required>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+  </div> -->
+
+
+</div>

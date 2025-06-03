@@ -1,0 +1,129 @@
+<div class="container">
+  <div class="row mb-3 justify-content-between">
+    <div class="col-md-5" *ngIf="dataCountries.length > 0">
+      <ngx-select-dropdown
+        [config]="{
+          displayKey: 'CountryName',
+          search: true,
+          placeholder: 'Search Country',
+          searchOnKey: 'CountryName',
+          searchPlaceholder: 'Search'
+        }"
+        [options]="dataCountries"
+        [(ngModel)]="searchedCountryDD"
+        (change)="countryChange($event)"
+      ></ngx-select-dropdown>
+    </div>
+    <div class="col-md-2 text-right">
+      <input
+        type="button"
+        value="Add Country"
+        class="btn btn-primary"
+        (click)="onAddCountry()"
+      />
+    </div>
+  </div>
+  <div class="row d-flex">
+    <div class="col-md-12">
+    <div class="card">
+    <div class="card-body">
+    <table class="table">
+      <thead class="thead-dark">
+        <tr>
+          <th>Country Code</th>
+          <th>Country Name</th>
+          <th style="width: 120px;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let row of countries
+              | paginate
+                : {
+                    itemsPerPage: tableSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+            let i = index
+          "
+          [class.active]="i == currentIndex"
+        >
+          <td scope="row">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.CountryCode }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.CountryCode"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.CountryName }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.CountryName"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onEditCountry(row)"
+              value="Edit"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onUpdateCountry(row)"
+              value="Update"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onResetCountry(row)"
+              value="Cancel"
+            />
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link del-btn m-1"
+              (click)="onDeleteCountry(row)"
+              value="Delete"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</div>
+</div>
+  <div class="row">
+    <div class="col-md-12">
+      <pagination-controls
+        responsive="true"
+        previousLabel="Prev"
+        nextLabel="Next"
+        (pageChange)="onTableDataChange($event)"
+      >
+      </pagination-controls>
+    </div>
+    <div class="col-md-4">
+      <div class="p-2 bd-highlight">
+        <select (change)="onTableSizeChange($event)" class="custom-select">
+          <option *ngFor="let size of tableSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,161 @@
+<div class="container">
+  <div class="row d-flex">
+    <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+      <table class="table">
+        <thead class="thead-dark">
+        <tr>
+          <th>Squad Id</th>
+          <th>Player</th>
+          <th>Player Jersey No</th>
+          <th>Tournament</th>
+          <th>Tournament Season</th>
+          <th>Team</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let row of player_Squads
+              | paginate
+                : {
+                    itemsPerPage: tableSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+            let i = index
+          "
+          [class.active]="i == currentIndex"
+        >
+        <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited" class="verticalTextAlign">{{
+                row.squadId
+              }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.squadId"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited" class="verticalTextAlign">{{
+                row.playerText
+              }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.playerText"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited" class="verticalTextAlign">{{
+                row.playerJerseyNo
+              }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.playerJerseyNo"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited" class="verticalTextAlign">{{
+                row.tournamentText
+              }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.tournamentText"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited" class="verticalTextAlign">{{
+                row.tournamentSeasonText
+              }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.tournamentSeasonText"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited" class="verticalTextAlign">{{
+                row.teamText
+              }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.teamText"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link"
+              (click)="onEditPlayerToTeam(row)"
+              value="Edit"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onUpdatePlayerToTeam(row)"
+              value="Update"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onResetPlayerToTeam(row)"
+              value="Cancel"
+            />
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link del-btn m-1"
+              (click)="onDeletePlayerToTeam(row)"
+              value="Delete"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <pagination-controls
+        responsive="true"
+        previousLabel="Prev"
+        nextLabel="Next"
+        (pageChange)="onTableDataChange($event)"
+      >
+      </pagination-controls>
+    </div>
+    <div class="col-md-4">
+      <div class="p-2 bd-highlight">
+        <select (change)="onTableSizeChange($event)" class="custom-select">
+          <option *ngFor="let size of tableSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

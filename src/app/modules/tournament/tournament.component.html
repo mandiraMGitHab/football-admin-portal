@@ -1,0 +1,221 @@
+<div class="container">
+  <div class="row mb-3 justify-content-between">
+    <div
+      class="col-md-5"
+      *ngIf="
+        tournaments.length > 0 && seasons.length > 0 && countries.length > 0
+      "
+    >
+      <ngx-select-dropdown
+        [config]="{
+          displayKey: '',
+          search: true,
+          placeholder: 'Search Tournament, Country, Season',
+          searchOnKey: '',
+          searchPlaceholder: 'Search'
+        }"
+        [options]="searchedTextList"
+        [(ngModel)]="searchedTournament"
+        (change)="searchTournament()"
+      ></ngx-select-dropdown>
+    </div>
+    <div class="col-md-2">
+      <input
+        type="button"
+        value="Add Tournament"
+        class="btn btn-primary"
+        (click)="onAddTournament()"
+      />
+    </div>
+  </div>
+  <div class="row d-flex">
+    <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+      <table class="table">
+        <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Season</th>
+          <th>Season Start</th>
+          <th>Season End</th>
+          <th>Country</th>
+          <th>Type</th>
+          <th>Teams#</th>
+          <th style="width: 90px;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let row of tournaments
+              | paginate
+                : {
+                    itemsPerPage: tableSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+            let i = index
+          "
+          [class.active]="i == currentIndex"
+        >
+          <td scope="row">
+            <ng-container>
+              <span>{{ row.tournamentId }}</span>
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited" class="verticalTextAlign">{{
+                row.tournamentText
+              }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.tournamentText"
+              />
+            </ng-container>
+          </td>
+          <td style="min-width: 100px">
+            <ngx-select-dropdown
+              [config]="{
+                displayKey: 'text',
+                search: true,
+                placeholder: 'Search Season',
+                searchOnKey: 'text',
+                searchPlaceholder: 'Search'
+              }"
+              [disabled]="!row.isEdited"
+              [options]="seasons"
+              [(ngModel)]="row.tournamentSeasonText"
+              (change)="seasonChange(row, $event)"
+            ></ngx-select-dropdown>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited" class="verticalTextAlign">{{
+                row.tournamentSeasonStart
+              }}</span>
+              <input
+                class="tableTextBox"
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.tournamentSeasonStart"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited" class="verticalTextAlign">{{
+                row.tournamentSeasonEnd
+              }}</span>
+              <input
+                class="tableTextBox"
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.tournamentSeasonEnd"
+              />
+            </ng-container>
+          </td>
+          <td style="min-width: 140px">
+            <ngx-select-dropdown
+              [config]="{
+                displayKey: 'text',
+                search: true,
+                placeholder: 'Search Country',
+                searchOnKey: 'text',
+                searchPlaceholder: 'Search'
+              }"
+              [disabled]="!row.isEdited"
+              [options]="countries"
+              [(ngModel)]="row.tournamentCountryText"
+              (change)="countryChange(row, $event)"
+            ></ngx-select-dropdown>
+          </td>
+          <td style="min-width: 180px">
+            <ngx-select-dropdown
+              [config]="{
+                displayKey: 'text',
+                search: true,
+                placeholder: 'Search Type',
+                searchOnKey: 'text',
+                searchPlaceholder: 'Search'
+              }"
+              [disabled]="!row.isEdited"
+              [options]="tournamentTypes"
+              [(ngModel)]="row.tournamentTypeText"
+              (change)="tournamentTypeChange(row, $event)"
+            ></ngx-select-dropdown>
+          </td>
+          <td scope="row">
+            <ng-container>
+              <span *ngIf="!row.isEdited" class="verticalTextAlign">{{
+                row.no_of_teams
+              }}</span>
+              <input
+                class="tableTextBox m-1"
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.no_of_teams"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onEditTournament(row)"
+              value="Edit"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onUpdateTournament(row)"
+              value="Update"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onResetTournament(row)"
+              value="Cancel"
+            />
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link del-btn m-1"
+              (click)="onDeleteTournament(row)"
+              value="Delete"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <pagination-controls
+        responsive="true"
+        previousLabel="Prev"
+        nextLabel="Next"
+        (pageChange)="onTableDataChange($event)"
+      >
+      </pagination-controls>
+    </div>
+    <div class="col-md-4">
+      <div class="p-2 bd-highlight">
+        <select (change)="onTableSizeChange($event)" class="custom-select">
+          <option *ngFor="let size of tableSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

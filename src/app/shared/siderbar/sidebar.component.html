@@ -1,0 +1,69 @@
+<div class="sideBar">
+  <a href="/" class="siteLogo"><img [src]="siteLogo"  width="100%" height="70px"/></a>
+
+  <mat-nav-list>
+    <!-- Dashboard -->
+    <div routerLinkActive="active-link" [routerLinkActiveOptions]="{ exact: true }">
+
+      <a mat-list-item routerLink="/" class="mx-16">
+        <mat-icon class="mr-2">home</mat-icon>
+        <span>Dashboard</span>
+      </a>
+
+    </div>
+
+    <!-- Players -->
+    <div routerLinkActive="active-link">
+      <a mat-list-item routerLink="/player" class="mx-16">
+        <mat-icon class="mr-2">person</mat-icon>
+        <span>Players</span>
+      </a>
+    </div>
+
+    <!-- Squads -->
+    <div routerLinkActive="active-link">
+      <a mat-list-item routerLink="/squad" class="mx-16">
+        <mat-icon class="mr-2">group</mat-icon>
+        <span>Squads</span>
+      </a>
+    </div>
+      <!-- Accordion Section -->
+      <mat-accordion>
+        <!-- LookUps -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon class="mr-2">search</mat-icon>
+              LookUps
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-nav-list>
+            <div routerLinkActive="active-link"><a mat-list-item routerLink="/country">Country</a></div>
+            <div routerLinkActive="active-link"><a mat-list-item routerLink="/season">Season</a></div>
+            <div routerLinkActive="active-link"><a mat-list-item routerLink="/tournament">Tournament</a></div>
+            <div routerLinkActive="active-link"><a mat-list-item routerLink="/team">Teams</a></div>
+            <div routerLinkActive="active-link"><a mat-list-item routerLink="/stadium">Stadium</a></div>
+          </mat-nav-list>
+        </mat-expansion-panel>
+
+        <!-- Matches -->
+        <mat-expansion-panel>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <mat-icon class="mr-2">sports_soccer</mat-icon>
+              Matches
+            </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <mat-nav-list>
+            <div routerLinkActive="active-link"><a mat-list-item routerLink="/match">Match</a></div>
+            <div routerLinkActive="active-link"><a mat-list-item routerLink="/match-stat">Match Stats</a></div>
+          </mat-nav-list>
+        </mat-expansion-panel>
+      </mat-accordion>
+  </mat-nav-list>
+
+
+
+</div>

@@ -1,0 +1,159 @@
+<div class="container">
+  <div class="row mb-3">
+    <div class="col-md-3">
+      <input
+        type="button"
+        value="Add Stadium"
+        class="btn btn-primary"
+        (click)="onAddStadium()"
+      />
+    </div>
+    <div
+      class="col-md-5"
+      *ngIf="dataStadiums.length > 0 && countries.length > 0"
+    >
+      <ngx-select-dropdown
+        [config]="{
+          displayKey: '',
+          search: true,
+          placeholder: 'Search Stadium, Country',
+          searchOnKey: '',
+          searchPlaceholder: 'Search Stadium, Country',
+          height: '300px'
+        }"
+        [options]="searchedTextList"
+        [(ngModel)]="searchedStadium"
+        (change)="searchStadium()"
+      ></ngx-select-dropdown>
+    </div>
+  </div>
+  <div class="row d-flex">
+    <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+      <table class="table">
+        <thead class="thead-dark">
+        <tr>
+          <th>Stadium ID</th>
+          <th>Stadium Name</th>
+          <th>Country Name</th>
+          <th>Capacity</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let row of stadiums
+              | paginate
+                : {
+                    itemsPerPage: tableSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+            let i = index
+          "
+          [class.active]="i == currentIndex"
+        >
+          <td scope="row">
+            <ng-container>
+              <span>{{ row.stadiumId }}</span>
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited" class="verticalTextAlign">{{
+                row.stadiumName
+              }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.stadiumName"
+              />
+            </ng-container>
+          </td>
+          <td style="min-width: 200px">
+            <ngx-select-dropdown
+              [config]="{
+                displayKey: 'text',
+                search: true,
+                placeholder: 'Search Country',
+                searchOnKey: 'text',
+                searchPlaceholder: 'Search'
+              }"
+              [disabled]="!row.isEdited"
+              [options]="countries"
+              [(ngModel)]="row.stadiumCountryText"
+              (change)="countryChange(row, $event)"
+            ></ngx-select-dropdown>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited" class="verticalTextAlign">{{
+                row.capacity
+              }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.capacity"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onEditStadium(row)"
+              value="Edit"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onUpdateStadium(row)"
+              value="Update"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onResetStadium(row)"
+              value="Cancel"
+            />
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link del-btn"
+              (click)="onDeleteStadium(row)"
+              value="Delete"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+  </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <pagination-controls
+        responsive="true"
+        previousLabel="Prev"
+        nextLabel="Next"
+        (pageChange)="onTableDataChange($event)"
+      >
+      </pagination-controls>
+    </div>
+    <div class="col-md-4">
+      <div class="p-2 bd-highlight">
+        <select (change)="onTableSizeChange($event)" class="custom-select">
+          <option *ngFor="let size of tableSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>

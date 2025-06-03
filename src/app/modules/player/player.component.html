@@ -1,0 +1,174 @@
+<div class="container">
+  <div class="row mb-3">
+    <div class="col-md-2">
+      <input
+        type="button"
+        value="Add Player"
+        class="btn btn-primary"
+        (click)="onAddPlayer()"
+      />
+    </div>
+  </div>
+  <div class="row d-flex">
+    <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+      <table class="table">
+        <thead class="thead-dark">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Country</th>
+          <th>Height</th>
+          <th>Weight</th>
+          <th>DOB</th>
+          <th>Primary Position</th>
+          <th>Secondary Position</th>
+          <th>Image</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let row of players
+              | paginate
+                : {
+                    itemsPerPage: tableSize,
+                    currentPage: page,
+                    totalItems: count
+                  };
+            let i = index
+          "
+          [class.active]="i == currentIndex"
+        >
+          <td scope="row">
+            <ng-container>
+              <span>{{ row.playerId }}</span>
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.playerName }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.playerName"
+              />
+            </ng-container>
+          </td>
+          <td style="width: 150px">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.countryName }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.countryName"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.height }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.height"
+              />
+            </ng-container>
+          </td>
+          <td>
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.weight }}</span>
+              <input
+                *ngIf="row.isEdited"
+                type="text"
+                [(ngModel)]="row.weight"
+              />
+            </ng-container>
+          </td>
+          <td style="width: 90px">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.dob }}</span>
+              <input *ngIf="row.isEdited" type="date" [(ngModel)]="row.dob" />
+            </ng-container>
+          </td>
+          <td style="width: 90px">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.primaryPosition }}</span>
+              <input *ngIf="row.isEdited" type="text" [(ngModel)]="row.primaryPosition" />
+            </ng-container>
+          </td>
+          <td style="width: 90px">
+            <ng-container>
+              <span *ngIf="!row.isEdited">{{ row.secondaryPosition }}</span>
+              <input *ngIf="row.isEdited" type="text" [(ngModel)]="row.secondaryPosition" />
+            </ng-container>
+          </td>
+          <td scope="row">
+            <ng-container>
+              <img [src]="row.image_url" alt="row.playerName" width="50px" height="50px" />
+              <input *ngIf="row.isEdited" type="file" (change)="onImageSelected($event, row)" />
+            </ng-container>
+          </td>
+          <td>
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onEditPlayer(row)"
+              value="Edit"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onUpdatePlayer(row)"
+              value="Update"
+            />
+            <input
+              type="button"
+              *ngIf="row.isEdited"
+              class="btn btn-link m-1"
+              (click)="onResetPlayer(row)"
+              value="Cancel"
+            />
+            <input
+              type="button"
+              *ngIf="!row.isEdited"
+              class="btn btn-link del-btn m-1"
+              (click)="onDeletePlayer(row)"
+              value="Delete"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    </div>
+  </div>
+
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <pagination-controls
+        responsive="true"
+        previousLabel="Prev"
+        nextLabel="Next"
+        (pageChange)="onTableDataChange($event)"
+      >
+      </pagination-controls>
+    </div>
+    <div class="col-md-4">
+      <div class="p-2 bd-highlight">
+        <select (change)="onTableSizeChange($event)" class="custom-select">
+          <option *ngFor="let size of tableSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+      </div>
+    </div>
+
+
+  </div>
+</div>
